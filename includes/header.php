@@ -1,16 +1,23 @@
-<!-- jouw HTML voor een Header komt hier... 
-Gebruik hier tenminste een header afbeelding en een menu
-Zorg dat je in het menu bij elk item een url parameter zet
-om te bepalen welke inhoud er ingeladen moet worden in je html
--->
-
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Mijn Onderwerpen</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        header { background: #333; color: #fff; padding: 10px; }
+        nav a { color: #fff; margin-right: 15px; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
 <header>
-    <div class="menu">
-        <nav>
-            <a href="">php</a>
-            <a href="">sql</a>
-            <a href="">java</a>
-        </nav>
-    </div>
+    <h1>Mijn Website</h1>
+    <nav>
+        <a href="index.php?onderwerp=1">PHP</a>
+        <a href="index.php?onderwerp=2">PDO</a>
+        <a href="index.php?onderwerp=3">MySQL</a>
+        <a href="index.php">Alle onderwerpen</a>
+    </nav>
 </header>
-
+<hr>

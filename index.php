@@ -1,26 +1,43 @@
-<!doctype html>
+<?php
+// DATABASE CONNECTIE
+$host = "localhost";
+$port = 8889;
+$dbname = "databank_php";
+$username = "root";
+$password = "root";
 
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>J2F1BELP5L2 - Content uit je database</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+$pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8", $username, $password);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-	<!-- laad hier via php je header in (vanuit je includes map) -->
-	 <?php include "includes/header.php"?>
-	 
-	 
-	 <!-- Haal hier uit de URL welke pagina uit het menu is opgevraagd. Gebruik deze om de content uit de database te halen. -->
-	 
-	 
-	 <!-- Laat hier de content die je op hebt gehaald uit de database zien op de pagina. -->
-	 
-	 
-	 <!-- laad hier via php je footer in (vanuit je includes map)-->
-	 <?php include "includes/footer.php"?>
+// INCLUDES HEADER
+include 'includes/header.php';
+
+// CONTENT OPHALEN AFHANKELIJK VAN GET PARAMETER
+if (isset($_GET['onderwerp']) && is_numeric($_GET['onderwerp'])) {
+    // Specifiek onderwerp ophalen
+    $id = intval($_GET['onderwerp']);
+    $stmt = $pdo->prepare("SELECT * FROM onderwerpen WHERE onderwerpen_id = :id");
+    $stmt->execute(['id' => $id]);
+    $onderwerpen = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    // Alle onderwerpen ophalen
+    $stmt = $pdo->query("SELECT * FROM onderwerpen");
+    $onderwerpen = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
-</body>
-</html>
+// CONTENT TONEN
+foreach ($onderwerpen as $rij): ?>
+    <div style="margin-bottom:30px;">
+        <h2><?= htmlspecialchars($rij['name']) ?></h2>
+         <div>
+        <?= $rij['description'] ?>  <!-- Let op: NIET htmlspecialchars -->
+    </div>
+		
+        <img src="/Dynamische-pagina/<?= $rij['image'] ?>" alt="<?= htmlspecialchars($rij['name']) ?>" width="200">
+    </div>
+<?php endforeach;
+
+// INCLUDES FOOTER
+include 'includes/footer.php';
+?>
